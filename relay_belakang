@@ -1,0 +1,34 @@
+oid setup() {
+  // put your setup code here, to run once:
+  Serial.begin(9600);
+
+  pinMode(relay1, OUTPUT);
+  pinMode(relay2, OUTPUT);
+  pinMode(led, OUTPUT);
+
+  digitalWrite(relay1, HIGH);
+  digitalWrite(relay2, HIGH);
+
+
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  if (Serial.available()){
+    char ser =  Serial.read();
+    if (ser == 'a'){
+      digitalWrite(relay1, HIGH);
+      digitalWrite(relay2, LOW);
+      digitalWrite(led, HIGH);
+      delay(50);
+    }
+
+      if (ser == 'b'){
+      digitalWrite(relay1, LOW);
+      digitalWrite(relay2, HIGH);
+      digitalWrite(led, HIGH);
+      delay(50);
+    }
+  }
+
+}
