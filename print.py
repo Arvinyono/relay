@@ -3,6 +3,7 @@ import barcode
 from barcode.writer import ImageWriter
 import os
 import win32print  # For Windows printing
+import time
 
 # Open the serial connection to the Arduino
 arduino = serial.Serial('COM3', 9600, timeout=1)
@@ -59,6 +60,26 @@ def main():
 
                 # Generate and print the barcode
                 generate_and_print_barcode(barcode_data)
+
+
+def main():
+    while True:
+        try:
+            # Check for incoming data from the Arduino
+            if arduino.in_waiting > 0:
+                response = arduino.readline().decode('utf-8').strip()
+
+                # Check if the response contains barcode data
+                if "Barcode Data:" in response:
+                    # Extract the barcode data
+                    barcode_data = response.split(":")[1].strip()
+                    print(f"Received barcode data: {barcode_data}")
+
+                    # Generate and print the barcode
+                    generate_and_print_barcode(barcode_data)
+        except Exception as e:
+            print(f"Error: {e}")
+            time.sleep(5)  # Wait before retrying
 
 if __name__ == "__main__":
     try:
